@@ -1,0 +1,43 @@
+%Introduction to Control Engineering Homework
+%Time Domain Analysis of Two Order System
+clc;
+clear;
+n = input('Choose the type of the function(Step-->1,Pulse-->2,Slope-->3): ');
+disp('*********************************************************************')
+num=input('Please input the numerator: ');
+den=input('Please input the denominator: ');
+t=0:0.01:100;
+disp('*********************************************************************')
+sys=tf(num,den)
+if n==1
+ [y,x]=step(sys,t);
+ step(sys)
+ grid
+elseif n==2
+ [y,x]=impulse(sys,t);
+ impulse(sys)
+ grid
+else
+ [y,x]=step(sys);
+ step(sys,t)
+ grid
+end
+max=0;
+tmax=0;
+for i=1:100t
+    if y(i)>=max
+        max=y(i);
+        tmax=x(i);
+    end
+end
+tp=tmax;
+Mp=(max-1)/1;
+fprintf('tp=%d',tp)
+fprintf('Mp=%d',Mp)
+
+
+
+
+    
+
+    
