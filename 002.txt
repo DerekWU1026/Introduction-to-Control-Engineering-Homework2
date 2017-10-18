@@ -1,64 +1,65 @@
 %Introduction to Control Engineering Homework
 %Time Domain Analysis of Two Order System
+%Author：Wu Yan
 clc;
 clear;
-n = input('Choose the type of the function(Step-->1,Pulse-->2,Slope-->3): ');
+n = input('Choose the type of the function(Step-->1,Pulse-->2,Slope-->3): ');%选择响应函数类型
 disp('*********************************************************************')
-num=input('Please input the numerator: ');
-den=input('Please input the denominator: ');
-t=0:0.01:100;
+num=input('Please input the numerator（add"[]" ）: ');%输入传递函数的分子系数
+den=input('Please input the denominator(add"[]"): ');%输入传递函数的分母系数
+t=0:0.01:100;%设定时间为100s
 disp('*********************************************************************')
-sys=tf(num,den)
+sys=tf(num,den)%系统传递函数表达式
 if n==1
- [y,x]=step(sys,t);
- step(sys)
- grid
+[y,x]=step(sys,t); %单位阶跃函数响应的信息
+step(sys)%画出单位阶跃函数响应的图像
+grid
 elseif n==2
- [y,x]=impulse(sys,t);
- impulse(sys)
- grid
+[y,x]=impulse(sys,t);%单位脉冲函数响应的信息
+impulse(sys)%画出单位脉冲函数响应的图像
+grid
 else
- [y,x]=step(sys,t);
- step(sys)
- grid
+[y,x]=step(sys,t);%单位斜坡函数响应的图像，因为库中没有斜坡函数，用单位阶跃函数除以s来代替
+step(sys)
+grid
 end
-[hmax,tmax]=max(y);
-tp=x(tmax);
-Mp=(hmax-1)*100/1;
+[hmax,tmax]=max(y);%取峰值
+tp=x(tmax);%取峰值时间
+Mp=(hmax-1)*100/1;%计算超调率
 i=1;
 j=1;
 if Mp>1
 while y(i)<1
-    i=i+1;
+i=i+1;
 end
-tr=x(i);
+tr=x(i);%上升时间
 else
-   
-    while y(i)<0.1
-        i=i+1;
-    end
-    while y(j)<0.9
-        j=j+1;
-    end
-    tr=x(j)-x(i);
+
+while y(i)<0.1
+i=i+1;
+end
+while y(j)<0.9
+j=j+1;
+end
+tr=x(j)-x(i);%无超调时的上升时间
 end
 i=1;
 while y(i)<0.5
-    i=i+1;
+i=i+1;
 end
-td=x(i);
+td=x(i);  %延迟时间
 k=9901;
-while y(k)>0.95 
-    k=k-1;
+while y(k)>0.95
+k=k-1;
 end
-ts=x(k);
-N=ts/td;    
- j=9901;
- while y(j)>0.98
-     j=j-1;
- end
- ts2=x(j);
- N2=ts2/td;
+ts=x(k);%调整时间5%
+N=ts/td;%振荡次数
+j=9901;
+while y(j)>0.98
+j=j-1;
+end
+ts2=x(j);%调整时间2%
+N2=ts2/td;%振荡次数
 
 fprintf('tr=%.2fs\n',tr)
 disp('*********************************************************************')
@@ -76,6 +77,3 @@ disp('*********************************************************************')
 fprintf('N=%.2f',N2)
 disp('(+/-2%)')
 disp('*********************************************************************')
-    
-
-    
